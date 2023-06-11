@@ -1,9 +1,7 @@
 const express = require('express');
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
-const { keyJwt } = require('../settings/keys');
 const Task = require('../models/Task');
-const bcrypt = require("bcrypt");
 
 let validationLogin = express.Router();
 validationLogin.use((req, res, next) => {
@@ -19,7 +17,7 @@ validationLogin.use((req, res, next) => {
     }
 
     if(token){
-        jwt.verify(token, keyJwt, (error, decoded) => {
+        jwt.verify(token, process.env.KEY, (error, decoded) => {
             if (error) {
                 return res.json({
                     message:'Invalid token'

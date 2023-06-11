@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
-const { keyJwt } = require('../settings/keys');
 const User = require('../models/User');
 const bcrypt = require("bcrypt");
 
@@ -32,7 +31,7 @@ router.post('/', async (req, res) => {
                     check:true
                 }
             
-                const token = jwt.sign(payload, keyJwt, {
+                const token = jwt.sign(payload, process.env.KEY, {
                     expiresIn:'7d'
                 });
             

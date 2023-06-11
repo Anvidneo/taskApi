@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const { port } = require('./settings/keys');
 const login = require('./routes/login');
 const users = require('./routes/users');
 const tasks = require('./routes/tasks');
@@ -26,6 +25,6 @@ app.use('/login', login);
 app.use('/users', users);
 app.use('/tasks', tasks);
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
     console.log('API Running in PORT 3001');
 });
