@@ -20,15 +20,16 @@ router.post('/', async (req, res) => {
         if (user) {
             let compare = bcrypt.compareSync(password, user.password);
             if (!compare) {
-                status = 404;
+                status = 400;
                 response = {
                     message: "Incorrect password"
                 };
             }
         
-            if (status != 404) {
+            if (status != 400) {
                 const payload = {
-                    check:true
+                    check:true,
+                    iduser: user.id
                 }
             
                 const token = jwt.sign(payload, process.env.KEY, {

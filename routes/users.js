@@ -36,7 +36,7 @@ router.get('/', validationLogin, async (req, res) => {
     try {
         const users = await User.findAll();
         if (!users) {
-            status = 404;
+            status = 204;
             response = {
                 error: 'Not data'
             };
@@ -67,27 +67,29 @@ router.post('/', async (req, res) => {
                 error: 'All params required'
             };
         }
-        
-        let pass = await bcrypt.hash(password, 10);
-        const user = await User.create({
-            username, 
-            password: pass,
-            name, 
-            email, 
-            createdAt: Date.now(),
-            updatedAt: Date.now()
-        });
 
-        if (!user) {
-            status = 400;
-            response = {
-                error: "User don't created"
-            };
-        } else {
-            response = {
-                message:'User created',
-                user
-            };
+        if (status != 400) {
+            let pass = await bcrypt.hash(password, 10);
+            const user = await User.create({
+                username, 
+                password: pass,
+                name, 
+                email, 
+                createdAt: Date.now(),
+                updatedAt: Date.now()
+            });
+    
+            if (!user) {
+                status = 400;
+                response = {
+                    error: "User don't created"
+                };
+            } else {
+                response = {
+                    message:'User created',
+                    user
+                };
+            }
         }
     } catch (error) {
         status = 400;
@@ -111,27 +113,29 @@ router.put('/:id', validationLogin, async (req, res) => {
                 error: 'All params required'
             };
         }
-        
-        let pass = await bcrypt.hash(password, 10);
-        const user = await User.upsert({
-            id,
-            username,
-            password: pass,
-            name,
-            email,
-            updatedAt: Date.now()
-        });
 
-        if (!user) {
-            status = 401;
-            response = {
-                error: "User don't update"
-            };
-        } else {
-            response = {
-                message:'User updated',
-                user
-            };
+        if (status != 400) {
+            let pass = await bcrypt.hash(password, 10);
+            const user = await User.upsert({
+                id,
+                username,
+                password: pass,
+                name,
+                email,
+                updatedAt: Date.now()
+            });
+    
+            if (!user) {
+                status = 401;
+                response = {
+                    error: "User don't update"
+                };
+            } else {
+                response = {
+                    message:'User updated',
+                    user
+                };
+            }
         }
     } catch (error) {
         status = 400;
@@ -152,7 +156,7 @@ router.get('/:id', validationLogin, async (req, res) => {
         let user = await User.findByPk(id);
 
         if (!user) {
-            status = 404;
+            status = 204;
             response = {
                 error: 'User not found'
             };
@@ -189,24 +193,32 @@ router.put('/changeStatus/:id', validationLogin, async (req, res) => {
         const { id } = req.params;
         const { status } = req.body;
 
-        const user = await User.upsert({
-            id,
-            status,
-            updatedAt: Date.now()
-        });
-
-        if (!user) {
-            statusCode = 401;
+        if (!status ) {
+            statusCode = 400;
             response = {
-                error: 'User not update'
-            };
-        } else {
-            response = {
-                message:'User updated',
-                user
+                error: 'All params required'
             };
         }
 
+        if (statusCode != 400) {
+            const user = await User.upsert({
+                id,
+                status,
+                updatedAt: Date.now()
+            });
+    
+            if (!user) {
+                statusCode = 401;
+                response = {
+                    error: 'User not update'
+                };
+            } else {
+                response = {
+                    message:'User updated',
+                    user
+                };
+            }
+        }
     } catch (error) {
         statusCode = 400;
         response = {
