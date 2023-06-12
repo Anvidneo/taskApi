@@ -58,7 +58,7 @@ router.get('/user/:iduser', async (req, res) => {
     res.status(status).json(response);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', validationLogin, async (req, res) => {
     let status = 200;
     let response = {};
     try {
@@ -183,7 +183,7 @@ router.put('/changeStatus/:id', validationLogin, async (req, res) => {
     try {
         const { id } = req.params;
         const { status } = req.body;
-        if (!status ) {
+        if ( typeof status != 'boolean' ) {
             statusCode = 400;
             response = {
                 error: 'All params required'
