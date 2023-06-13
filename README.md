@@ -14,3 +14,6 @@ Para correr este debe estar en la ruta base del proyecto y correr el siguiente c
 
 ## Base de datos
 El proyecto cuenta con una base de datos en linea, la cual esta en un host gratuito por lo cual no es necesario cargar la base de datos localmente
+
+## Coleccion de Postman 
+En la ruita base del proyecto se encuentra una colección de postman en la cual se encuentran todas las rutas y su consumo para que se peudan realizar las pruebas. 
